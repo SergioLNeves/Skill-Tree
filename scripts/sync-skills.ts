@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import matter from "gray-matter";
 
@@ -72,8 +72,10 @@ async function main() {
 		items,
 	};
 
+	const outPath = join(process.cwd(), "src/data/skills.json");
+	mkdirSync(join(process.cwd(), "src/data"), { recursive: true });
 	writeFileSync(
-		join(process.cwd(), "src/data/skills.json"),
+		outPath,
 		JSON.stringify(output, null, 2) + "\n",
 	);
 
