@@ -1,10 +1,8 @@
-"use client";
-
 import { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { Button } from "#/components/ui/button";
 
-const COMMAND = "npx skills update";
+const COMMAND = "npx skills add SergioLNeves/toolkit-agent-skills";
 
 export default function Install() {
   const [copied, setCopied] = useState(false);
