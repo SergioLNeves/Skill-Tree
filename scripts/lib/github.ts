@@ -1,5 +1,8 @@
-export const REPO = "SergioLNeves/toolkit-agent-skills";
-export const BRANCH = "main";
+if (!process.env.SKILLS_REPO) throw new Error("SKILLS_REPO is not set");
+if (!process.env.SKILLS_BRANCH) throw new Error("SKILLS_BRANCH is not set");
+
+export const REPO = process.env.SKILLS_REPO;
+export const BRANCH = process.env.SKILLS_BRANCH;
 
 export type TreeNode = { path: string; type: string };
 
