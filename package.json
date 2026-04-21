@@ -13,7 +13,7 @@
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
-    "sync-skills": "tsx scripts/sync-skills.ts",
+    "sync-skills": "node --env-file=.env --import tsx/esm scripts/sync-skills.ts",
     "prebuild": "pnpm sync-skills"
   },
   "dependencies": {
