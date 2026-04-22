@@ -2,13 +2,12 @@ import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { Button } from "#/components/ui/button";
 
-const COMMAND = "npx skills add SergioLNeves/toolkit-agent-skills";
-
 export default function Install() {
+  const command = import.meta.env.VITE_SKILLS_INSTALL;
   const [copied, setCopied] = useState(false);
 
   function handleCopy() {
-    navigator.clipboard.writeText(COMMAND);
+    navigator.clipboard.writeText(command);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
@@ -26,7 +25,7 @@ export default function Install() {
       >
         <span className="font-mono text-sm ">
           <span className="text-secondary-foreground/60 ">$ </span>
-          {COMMAND}
+          {command}
         </span>
 
         <div className="">
