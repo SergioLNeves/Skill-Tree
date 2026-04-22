@@ -24,7 +24,7 @@ const getSkill = createServerFn({ method: "GET" })
 		};
 	});
 
-export const Route = createFileRoute("/skills/$category/$name")({
+export const Route = createFileRoute("/docs/skills/$category/$name")({
 	loader: async ({ params }) => {
 		const skill = await getSkill({ data: params });
 		if (!skill) throw notFound();
@@ -35,9 +35,5 @@ export const Route = createFileRoute("/skills/$category/$name")({
 
 function SkillPage() {
 	const skill = Route.useLoaderData();
-	return (
-		<div className="p-6">
-			<SkillView {...skill} />
-		</div>
-	);
+	return <SkillView {...skill} />;
 }

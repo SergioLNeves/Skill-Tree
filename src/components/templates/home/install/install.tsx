@@ -14,7 +14,7 @@ export default function Install() {
   }
 
   return (
-    <section className="flex flex-col items-center gap-3">
+    <section className="hidden md:flex flex-col items-center gap-3">
       <p className="font-mono text-xs tracking-[0.2em]">INSTALL NOW</p>
 
       <Button

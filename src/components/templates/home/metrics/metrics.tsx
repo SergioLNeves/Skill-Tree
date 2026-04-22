@@ -19,7 +19,7 @@ export default function Metrics({
   tags = [],
 }: MetricsProps) {
   return (
-    <section className="grid grid-cols-3 bg-card justify-center items-center border border-primary ">
+    <section className="hidden md:grid grid-cols-3 bg-card justify-center items-center border border-primary">
       <Card id="Skills">
         <CardHeader className="uppercase font-thin text-muted-foreground text-xs font-mono tracking-[0.2em] ">
           Skills
@@ -60,7 +60,7 @@ export default function Metrics({
           <CardTitle className="text-4xl line-clamp-1">{tags.length}</CardTitle>
         </CardContent>
         <CardFooter className="flex gap-1 mt-2">
-          {tags.slice(0, 3).map((tag) => (
+          {tags.slice(0, 2).map((tag) => (
             <Badge key={tag} variant="secondary">
               {tag}
             </Badge>

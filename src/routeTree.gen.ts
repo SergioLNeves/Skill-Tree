@@ -9,48 +9,97 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SkillsIndexRouteImport } from './routes/skills/index'
 import { Route as SkillsCategoryNameRouteImport } from './routes/skills/$category.$name'
+import { Route as DocsSkillsCategoryNameRouteImport } from './routes/docs/skills/$category.$name'
 
+const SkillsRoute = SkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SkillsIndexRoute = SkillsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SkillsRoute,
+} as any)
 const SkillsCategoryNameRoute = SkillsCategoryNameRouteImport.update({
-  id: '/skills/$category/$name',
-  path: '/skills/$category/$name',
+  id: '/$category/$name',
+  path: '/$category/$name',
+  getParentRoute: () => SkillsRoute,
+} as any)
+const DocsSkillsCategoryNameRoute = DocsSkillsCategoryNameRouteImport.update({
+  id: '/docs/skills/$category/$name',
+  path: '/docs/skills/$category/$name',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/skills': typeof SkillsRouteWithChildren
+  '/skills/': typeof SkillsIndexRoute
   '/skills/$category/$name': typeof SkillsCategoryNameRoute
+  '/docs/skills/$category/$name': typeof DocsSkillsCategoryNameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/skills': typeof SkillsIndexRoute
   '/skills/$category/$name': typeof SkillsCategoryNameRoute
+  '/docs/skills/$category/$name': typeof DocsSkillsCategoryNameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/skills': typeof SkillsRouteWithChildren
+  '/skills/': typeof SkillsIndexRoute
   '/skills/$category/$name': typeof SkillsCategoryNameRoute
+  '/docs/skills/$category/$name': typeof DocsSkillsCategoryNameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/skills/$category/$name'
+  fullPaths:
+    | '/'
+    | '/skills'
+    | '/skills/'
+    | '/skills/$category/$name'
+    | '/docs/skills/$category/$name'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/skills/$category/$name'
-  id: '__root__' | '/' | '/skills/$category/$name'
+  to:
+    | '/'
+    | '/skills'
+    | '/skills/$category/$name'
+    | '/docs/skills/$category/$name'
+  id:
+    | '__root__'
+    | '/'
+    | '/skills'
+    | '/skills/'
+    | '/skills/$category/$name'
+    | '/docs/skills/$category/$name'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SkillsCategoryNameRoute: typeof SkillsCategoryNameRoute
+  SkillsRoute: typeof SkillsRouteWithChildren
+  DocsSkillsCategoryNameRoute: typeof DocsSkillsCategoryNameRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/skills': {
+      id: '/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof SkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -58,19 +107,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/skills/': {
+      id: '/skills/'
+      path: '/'
+      fullPath: '/skills/'
+      preLoaderRoute: typeof SkillsIndexRouteImport
+      parentRoute: typeof SkillsRoute
+    }
     '/skills/$category/$name': {
       id: '/skills/$category/$name'
-      path: '/skills/$category/$name'
+      path: '/$category/$name'
       fullPath: '/skills/$category/$name'
       preLoaderRoute: typeof SkillsCategoryNameRouteImport
+      parentRoute: typeof SkillsRoute
+    }
+    '/docs/skills/$category/$name': {
+      id: '/docs/skills/$category/$name'
+      path: '/docs/skills/$category/$name'
+      fullPath: '/docs/skills/$category/$name'
+      preLoaderRoute: typeof DocsSkillsCategoryNameRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
+interface SkillsRouteChildren {
+  SkillsIndexRoute: typeof SkillsIndexRoute
+  SkillsCategoryNameRoute: typeof SkillsCategoryNameRoute
+}
+
+const SkillsRouteChildren: SkillsRouteChildren = {
+  SkillsIndexRoute: SkillsIndexRoute,
+  SkillsCategoryNameRoute: SkillsCategoryNameRoute,
+}
+
+const SkillsRouteWithChildren =
+  SkillsRoute._addFileChildren(SkillsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SkillsCategoryNameRoute: SkillsCategoryNameRoute,
+  SkillsRoute: SkillsRouteWithChildren,
+  DocsSkillsCategoryNameRoute: DocsSkillsCategoryNameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
