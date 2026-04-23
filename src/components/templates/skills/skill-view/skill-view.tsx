@@ -3,21 +3,15 @@ import remarkGfm from "remark-gfm";
 import { Badge } from "#/components/ui/badge";
 
 interface SkillViewProps {
-  category: string;
   tags: string[];
   content: string;
 }
 
-export default function SkillView({
-  category,
-  tags,
-  content,
-}: SkillViewProps) {
+export default function SkillView({ tags, content }: SkillViewProps) {
   return (
     <div className="flex flex-col w-ful gap-8 px-4 py-10">
       <header className="flex flex-col gap-3">
         <div className="flex flex-wrap gap-1.5">
-          <Badge variant="outline">{category}</Badge>
           {tags.map((tag) => (
             <Badge key={tag} variant="secondary">
               {tag}
