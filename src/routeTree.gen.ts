@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as GraphRouteImport } from './routes/graph'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocsIndexRouteImport } from './routes/docs/index'
@@ -16,6 +17,11 @@ import { Route as DocsSkillsIndexRouteImport } from './routes/docs/skills/index'
 import { Route as DocsSkillsCategoryIndexRouteImport } from './routes/docs/skills/$category/index'
 import { Route as DocsSkillsCategoryNameRouteImport } from './routes/docs/skills/$category/$name'
 
+const GraphRoute = GraphRouteImport.update({
+  id: '/graph',
+  path: '/graph',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DocsRoute = DocsRouteImport.update({
   id: '/docs',
   path: '/docs',
@@ -50,6 +56,7 @@ const DocsSkillsCategoryNameRoute = DocsSkillsCategoryNameRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteWithChildren
+  '/graph': typeof GraphRoute
   '/docs/': typeof DocsIndexRoute
   '/docs/skills/': typeof DocsSkillsIndexRoute
   '/docs/skills/$category/$name': typeof DocsSkillsCategoryNameRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/graph': typeof GraphRoute
   '/docs': typeof DocsIndexRoute
   '/docs/skills': typeof DocsSkillsIndexRoute
   '/docs/skills/$category/$name': typeof DocsSkillsCategoryNameRoute
@@ -66,6 +74,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/docs': typeof DocsRouteWithChildren
+  '/graph': typeof GraphRoute
   '/docs/': typeof DocsIndexRoute
   '/docs/skills/': typeof DocsSkillsIndexRoute
   '/docs/skills/$category/$name': typeof DocsSkillsCategoryNameRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/docs'
+    | '/graph'
     | '/docs/'
     | '/docs/skills/'
     | '/docs/skills/$category/$name'
@@ -83,6 +93,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/graph'
     | '/docs'
     | '/docs/skills'
     | '/docs/skills/$category/$name'
@@ -91,6 +102,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/docs'
+    | '/graph'
     | '/docs/'
     | '/docs/skills/'
     | '/docs/skills/$category/$name'
@@ -100,10 +112,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DocsRoute: typeof DocsRouteWithChildren
+  GraphRoute: typeof GraphRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/graph': {
+      id: '/graph'
+      path: '/graph'
+      fullPath: '/graph'
+      preLoaderRoute: typeof GraphRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/docs': {
       id: '/docs'
       path: '/docs'
@@ -168,6 +188,7 @@ const DocsRouteWithChildren = DocsRoute._addFileChildren(DocsRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DocsRoute: DocsRouteWithChildren,
+  GraphRoute: GraphRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

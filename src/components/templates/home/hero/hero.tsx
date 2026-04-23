@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen, Network } from "lucide-react";
 import { Button } from "#/components/ui/button";
 import { Skill, Tree } from "#/components/ui/logo";
 
@@ -30,6 +30,11 @@ export default function Hero() {
         <Button size="lg" variant="outline" asChild>
           <Link to="/docs">
             <BookOpen className="size-4" /> All skills
+          </Link>
+        </Button>
+        <Button size="lg" variant="outline" asChild>
+          <Link to="/graph">
+            <Network className="size-4" /> Graph view
           </Link>
         </Button>
       </div>
