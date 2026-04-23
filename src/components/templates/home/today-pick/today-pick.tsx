@@ -5,7 +5,6 @@ export interface SkillItem {
   name: string;
   tags: string[];
   category: string;
-  href: string;
 }
 
 interface TodayPickProps {
@@ -22,7 +21,11 @@ export default function TodayPick({ items = [] }: TodayPickProps) {
         {items.slice(0, 10).map((item) => (
           <li key={item.name}>
             <Link
-              to={item.href}
+              to="/docs/skills/$category/$name"
+              params={{
+                category: item.category.toLowerCase(),
+                name: item.name,
+              }}
               className="flex flex-col gap-1 py-3 hover:opacity-70 transition-opacity select-none"
             >
               <div className="flex items-center justify-between gap-2">

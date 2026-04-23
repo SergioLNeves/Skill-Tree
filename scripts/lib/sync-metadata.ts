@@ -21,7 +21,6 @@ export async function syncMetadata(tree: TreeNode[]): Promise<void> {
 				name: (data.name as string) ?? name,
 				category: toTitle(categorySlug),
 				tags: (data.tags as string[]) ?? [],
-				href: `/skills/${categorySlug}/${name}`,
 			};
 		}),
 	);

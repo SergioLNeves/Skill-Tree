@@ -23,12 +23,12 @@ export default function Hero() {
 
       <div className="flex flex-row justify-center mt-9 gap-3">
         <Button size="lg" asChild>
-          <Link to="/">
+          <Link to="/docs/skills">
             Explore categories <ArrowRight className="size-4" />
           </Link>
         </Button>
         <Button size="lg" variant="outline" asChild>
-          <Link to="/">
+          <Link to="/docs">
             <BookOpen className="size-4" /> All skills
           </Link>
         </Button>

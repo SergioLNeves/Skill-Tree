@@ -1,14 +1,20 @@
-import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { parseAsString, useQueryState } from "nuqs";
 import { Badge } from "#/components/ui/badge";
 import type { SkillItem } from "#/components/templates/home/today-pick/today-pick";
 import data from "#/data/skills.json";
 
-export const Route = createFileRoute("/skills/")({
+export const Route = createFileRoute("/docs/skills/")({
+	validateSearch: (search): { category?: string; q?: string } => ({
+		category: typeof search.category === "string" && search.category ? search.category : undefined,
+		q: typeof search.q === "string" && search.q ? search.q : undefined,
+	}),
 	component: SkillsIndex,
 });
 
 function SkillsIndex() {
-	const { q, category } = useSearch({ from: "/skills" });
+	const [q] = useQueryState("q", parseAsString.withDefault(""));
+	const [category] = useQueryState("category", parseAsString.withDefault(""));
 
 	const filtered = (data.items as SkillItem[]).filter((item) => {
 		if (category && item.category !== category) return false;

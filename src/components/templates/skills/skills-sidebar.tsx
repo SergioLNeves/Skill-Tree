@@ -1,5 +1,12 @@
-import { useNavigate } from "@tanstack/react-router";
-import { LayersIcon, SearchIcon } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { ChevronDownIcon, LayoutGridIcon, LayersIcon, SearchIcon } from "lucide-react";
+import { useState } from "react";
+import { parseAsString, useQueryState } from "nuqs";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "#/components/ui/collapsible";
 import {
 	Sidebar,
 	SidebarContent,
@@ -7,7 +14,6 @@ import {
 	SidebarGroupContent,
 	SidebarGroupLabel,
 	SidebarHeader,
-	SidebarInput,
 	SidebarMenu,
 	SidebarMenuBadge,
 	SidebarMenuButton,
@@ -18,17 +24,12 @@ import type { SkillItem } from "#/components/templates/home/today-pick/today-pic
 interface SkillsSidebarProps {
 	categories: string[];
 	items: SkillItem[];
-	q: string;
-	category: string;
 }
 
-export default function SkillsSidebar({
-	categories,
-	items,
-	q,
-	category,
-}: SkillsSidebarProps) {
+export default function SkillsSidebar({ categories, items }: SkillsSidebarProps) {
 	const navigate = useNavigate();
+	const [open, setOpen] = useState(true);
+	const [category] = useQueryState("category", parseAsString.withDefault(""));
 
 	const categoryCounts = categories.reduce(
 		(acc, cat) => {
@@ -38,14 +39,10 @@ export default function SkillsSidebar({
 		{} as Record<string, number>,
 	);
 
-	function handleSearch(value: string) {
-		navigate({ to: "/skills", search: { q: value, category } });
-	}
-
 	function handleCategory(cat: string) {
 		navigate({
-			to: "/skills",
-			search: { q: "", category: cat === category ? "" : cat },
+			to: "/docs/skills",
+			search: cat === category ? {} : { category: cat },
 		});
 	}
 
@@ -56,43 +53,60 @@ export default function SkillsSidebar({
 					<LayersIcon className="size-4 text-muted-foreground" />
 					<span className="font-mono text-sm font-semibold">skill-tree</span>
 				</div>
-				<div className="relative">
-					<SearchIcon className="absolute left-2.5 top-2 size-3.5 text-muted-foreground" />
-					<SidebarInput
-						placeholder="buscar skill..."
-						value={q}
-						onChange={(e) => handleSearch(e.target.value)}
-						className="pl-8"
-					/>
-				</div>
 			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
-					<SidebarGroupLabel>Categorias</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									isActive={category === ""}
-									onClick={() => handleCategory("")}
-								>
-									<span>Todas</span>
-									<SidebarMenuBadge>{items.length}</SidebarMenuBadge>
+								<SidebarMenuButton asChild>
+									<Link to="/docs">
+										<SearchIcon className="size-3.5" />
+										<span>Busca</span>
+									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
-							{categories.map((cat) => (
-								<SidebarMenuItem key={cat}>
-									<SidebarMenuButton
-										isActive={category === cat}
-										onClick={() => handleCategory(cat)}
-									>
-										<span>{cat}</span>
-										<SidebarMenuBadge>{categoryCounts[cat]}</SidebarMenuBadge>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-							))}
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									isActive={category === ""}
+									onClick={() => navigate({ to: "/docs/skills", search: {} })}
+								>
+									<LayoutGridIcon className="size-3.5" />
+									<span>Todas</span>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>
+				</SidebarGroup>
+
+				<SidebarGroup>
+					<Collapsible open={open} onOpenChange={setOpen}>
+						<CollapsibleTrigger asChild>
+							<SidebarGroupLabel className="cursor-pointer select-none hover:text-foreground transition-colors w-full">
+								<span>Categorias</span>
+								<ChevronDownIcon
+									className={`ml-auto size-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+								/>
+							</SidebarGroupLabel>
+						</CollapsibleTrigger>
+						<CollapsibleContent>
+							<SidebarGroupContent>
+								<SidebarMenu>
+									{categories.map((cat) => (
+										<SidebarMenuItem key={cat}>
+											<SidebarMenuButton
+												isActive={category === cat}
+												onClick={() => handleCategory(cat)}
+											>
+												<span>{cat}</span>
+												<SidebarMenuBadge>{categoryCounts[cat]}</SidebarMenuBadge>
+											</SidebarMenuButton>
+										</SidebarMenuItem>
+									))}
+								</SidebarMenu>
+							</SidebarGroupContent>
+						</CollapsibleContent>
+					</Collapsible>
 				</SidebarGroup>
 			</SidebarContent>
 		</Sidebar>
