@@ -23,8 +23,8 @@ jobs:
       - run: pnpm sync-skills
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SKILLS_REPO: SergioLNeves/toolkit-agent-skills
-          SKILLS_BRANCH: main
+          SKILLS_REPO: ${{ vars.SKILLS_REPO }}
+          SKILLS_BRANCH: ${{ vars.SKILLS_BRANCH || 'main' }}
       - name: Commit if changed
         run: |
           if [[ -n "$(git status --porcelain src/data/skills.json src/data/skills/)" ]]; then
