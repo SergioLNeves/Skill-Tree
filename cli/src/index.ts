@@ -101,6 +101,12 @@ ${pc.bold("OPÇÕES")}
 			pc.bold("Próximos passos:"),
 			`  cd ${projectName}`,
 			"  pnpm dev",
+			"",
+			pc.yellow("⚠  GitHub Actions — sync automático de skills:"),
+			"  Adicione SKILLS_REPO como variável de repositório em:",
+			pc.dim("  Settings → Secrets and variables → Actions → Variables"),
+			`  ${pc.cyan("SKILLS_REPO")} = ${pc.dim(envs.skillsRepo)}`,
+			`  ${pc.cyan("SKILLS_BRANCH")} = ${pc.dim(envs.skillsBranch)}`,
 		].join("\n"),
 	);
 }

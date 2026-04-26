@@ -19,6 +19,12 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      - name: Validate required variables
+        run: |
+          if [[ -z "${{ vars.SKILLS_REPO }}" ]]; then
+            echo "::error title=SKILLS_REPO not configured::Set SKILLS_REPO in Settings → Secrets and variables → Actions → Variables (format: owner/repo)"
+            exit 1
+          fi
       - run: pnpm install --frozen-lockfile
       - run: pnpm sync-skills
         env:
