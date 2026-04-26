@@ -1,6 +1,6 @@
 {
 	"name": "create-skill-tree",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Scaffold a new Skill Tree project",
 	"type": "module",
 	"bin": {
@@ -10,7 +10,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "tsup",
+		"build": "tsup && chmod +x dist/index.js",
 		"dev": "tsup --watch",
 		"lint": "biome check src"
 	},
