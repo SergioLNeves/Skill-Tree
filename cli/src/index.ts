@@ -88,7 +88,7 @@ ${pc.bold("OPÇÕES")}
 
 		p.log.step("Sincronizando skills (pnpm sync-skills)…");
 		try {
-			syncSkills(targetDir);
+			syncSkills(targetDir, envs);
 		} catch {
 			p.log.warn("sync-skills falhou. Execute manualmente: pnpm sync-skills");
 		}
