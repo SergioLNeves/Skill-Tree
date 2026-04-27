@@ -3,11 +3,22 @@ import { Link, useRouterState } from "@tanstack/react-router";
 function useBreadcrumbItems() {
 	const { location } = useRouterState();
 	const segments = location.pathname.split("/").filter(Boolean);
-	return segments.map((seg, i) => ({
-		label: seg,
-		path: `/${segments.slice(0, i + 1).join("/")}`,
-		isLast: i === segments.length - 1,
-	}));
+	return segments.map((seg, i) => {
+		const isCategory =
+			i >= 2 &&
+			segments[i - 1] === "skills" &&
+			i < segments.length - 1;
+
+		const path = isCategory
+			? `/docs/skills?category=${encodeURIComponent(seg)}`
+			: `/${segments.slice(0, i + 1).join("/")}`;
+
+		return {
+			label: seg,
+			path,
+			isLast: i === segments.length - 1,
+		};
+	});
 }
 
 export default function DocsBreadcrumb() {
