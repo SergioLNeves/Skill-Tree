@@ -10,7 +10,7 @@ function useBreadcrumbItems() {
 			i < segments.length - 1;
 
 		const path = isCategory
-			? `/docs/skills?category=${encodeURIComponent(seg)}`
+			? `/docs/skills?category=${encodeURIComponent(seg.charAt(0).toUpperCase() + seg.slice(1))}`
 			: `/${segments.slice(0, i + 1).join("/")}`;
 
 		return {
